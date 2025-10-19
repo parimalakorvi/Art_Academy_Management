@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Academy Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: rgb(242, 36, 36);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: rgba(255,255,255,0.9);
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .app-container {
+            display: none;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .login-title {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .role-selector {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .role-btn {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .role-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .role-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .demo-credentials {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        /* Dashboard Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.95);
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .welcome-msg {
+            color: #333;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: rgba(255,255,255,0.9);
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .data-grid {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .data-table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-active { background: #d4edda; color: #155724; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-completed { background: #cce7ff; color: #004085; }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .card-meta {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+         .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+        }
+   
+
+        .modal-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="logo">🎨</div>
+        <h1 class="login-title">Playful Palette Art Academy</h1>
+        
+        <div class="role-selector">
+            <button class="role-btn active" onclick="selectRole('admin')">Admin</button>
+            <button class="role-btn" onclick="selectRole('student')">Student</button>
+            <button class="role-btn" onclick="selectRole('instructor')">Instructor</button>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+
+    </div>
+
+    <!-- Main Application -->
+    <div id="appContainer" class="app-container">
+        <div class="header">
+            <div class="welcome-msg">
+                <h2 id="welcomeMessage">Welcome back!</h2>
+                <p id="roleDisplay">Admin Dashboard</p>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs" id="navigationTabs">
+            <!-- Tabs will be populated based on user role -->
+
+        
+        </div>
+        <div class="gallery">
+        <img src="image1.jpeg" alt="Art 1">
+        <img src="image2.jpeg" alt="Art 2">
+        <img src="image3.jpeg" alt="Art 4">
+     </div>
+     <div class="container">
+        <div class="header">
+            <h1>🎨WELCOME TO PLAYFUL PALETTE ART ACADEMY🎨</h1>
+
+        </div>
+
+
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <h2 id="dashboardTitle">📊 Dashboard Overview</h2>
+            <div class="stats-grid" id="statsGrid">
+                <!-- Stats will be populated based on user role -->
+            </div>
+            
+            <div id="dashboardContent">
+                <!-- Dashboard content will be populated based on user role -->
+            </div>
+        </div>
+
+        <!-- Students Tab (Admin/Instructor only) -->
+         <!-- Students Tab -->
+        <div id="students" class="tab-content">
+            <h2>👥 Student Management</h2>
+            <button class="btn" onclick="showModal('studentModal')">Add New Student</button>
+            
+            <div class="data-grid">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Registration Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTable">
+                        <tr>
+                            <td>S001</td>
+                            <td>Emma Johnson</td>
+                            <td>emma.j@email.com</td>
+                            <td>+1-555-0123</td>
+                            <td>2025-06-12</td>
+                            <td>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px;">Edit</button>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px; background: #dc3545;">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>S002</td>
+                            <td>David Smith</td>
+                            <td>david.s@email.com</td>
+                            <td>+1-555-0124</td>
+                            <td>2025-06-10</td>
+                            <td>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px;">Edit</button>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px; background: #dc3545;">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <!-- My Profile Tab -->
+        <div id="profile" class="tab-content">
+            <h2>👤 My Profile</h2>
+            <div class="card-grid">
+                <div class="info-card">
+                    <div class="card-title">Personal Information</div>
+                    <div class="card-meta" id="profileInfo">
+                        <!-- Profile info will be populated based on logged-in user -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <!-- Instructors Tab -->
+        <div id="instructors" class="tab-content">
+            <h2>👨‍🏫 Instructor Management</h2>
+            <button class="btn" onclick="showModal('instructorModal')">Add New Instructor</button>
+            
+            <div class="data-grid">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Expertise</th>
+                            <th>Phone</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>I001</td>
+                            <td>Prof. Maria Garcia</td>
+                            <td>maria.g@artacademy.com</td>
+                            <td>Oil Painting, Portraits</td>
+                            <td>+1-555-0200</td>
+                            <td>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px;">Edit</button>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px; background: #dc3545;">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>I002</td>
+                            <td>Dr. James Chen</td>
+                            <td>james.c@artacademy.com</td>
+                            <td>Digital Arts, Animation</td>
+                            <td>+1-555-0201</td>
+                            <td>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px;">Edit</button>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px; background: #dc3545;">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Courses Tab -->
+        <div id="courses" class="tab-content">
+            <h2>📚 Course Management</h2>
+            <button class="btn" onclick="showModal('courseModal')">Add New Course</button>
+            
+            <div class="data-grid">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Level</th>
+                            <th>Duration</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>C001</td>
+                            <td>Introduction to Oil Painting</td>
+                            <td>Learn basic oil painting techniques</td>
+                            <td>Beginner</td>
+                            <td>8 weeks</td>
+                            <td>$299</td>
+                            <td>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px;">Edit</button>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px; background: #dc3545;">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>C002</td>
+                            <td>Digital Art Fundamentals</td>
+                            <td>Master digital art tools and techniques</td>
+                            <td>Intermediate</td>
+                            <td>12 weeks</td>
+                            <td>$399</td>
+                            <td>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px;">Edit</button>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px; background: #dc3545;">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Enrollments Tab -->
+        <div id="enrollments" class="tab-content">
+            <h2>📝 Enrollment Management</h2>
+            <button class="btn" onclick="showModal('enrollmentModal')">New Enrollment</button>
+            
+            <div class="data-grid">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Student</th>
+                            <th>Course</th>
+                            <th>Enrollment Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>E001</td>
+                            <td>Emma Johnson</td>
+                            <td>Introduction to Oil Painting</td>
+                            <td>2025-06-12</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px;">Edit</button>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px; background: #dc3545;">Cancel</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>E002</td>
+                            <td>David Smith</td>
+                            <td>Digital Art Fundamentals</td>
+                            <td>2025-06-10</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                            <td>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px;">Edit</button>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px; background: #dc3545;">Cancel</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Classes Tab -->
+        <div id="classes" class="tab-content">
+            <h2>🕐 Class Schedule</h2>
+            <button class="btn" onclick="showModal('classModal')">Schedule New Class</button>
+            
+            <div class="data-grid">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Course</th>
+                            <th>Instructor</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CL001</td>
+                            <td>Introduction to Oil Painting</td>
+                            <td>Prof. Maria Garcia</td>
+                            <td>2025-06-15</td>
+                            <td>10:00 - 12:00</td>
+                            <td>Studio A</td>
+                            <td>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px;">Edit</button>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px; background: #dc3545;">Cancel</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CL002</td>
+                            <td>Digital Art Fundamentals</td>
+                            <td>Dr. James Chen</td>
+                            <td>2025-06-16</td>
+                            <td>14:00 - 16:00</td>
+                            <td>Computer Lab</td>
+                            <td>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px;">Edit</button>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px; background: #dc3545;">Cancel</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Artwork Tab -->
+        <div id="artwork" class="tab-content">
+            <h2>🎨 Student Artwork Gallery</h2>
+            <button class="btn" onclick="showModal('artworkModal')">Upload Artwork</button>
+            
+            <div class="art-gallery">
+                <div class="art-card">
+                    <div class="art-image">🖼️ Landscape Oil Painting</div>
+                    <div class="art-info">
+                        <div class="art-title">Sunset Valley</div>
+                        <div class="art-meta">
+                            <div>By: Emma Johnson</div>
+                            <div>Medium: Oil on Canvas</div>
+                            <div>Submitted: 2025-06-10</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="art-card">
+                    <div class="art-image">🎨 Digital Portrait</div>
+                    <div class="art-info">
+                        <div class="art-title">Self Portrait</div>
+                        <div class="art-meta">
+                            <div>By: David Smith</div>
+                            <div>Medium: Digital Art</div>
+                            <div>Submitted: 2025-06-08</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="art-card">
+                    <div class="art-image">✏️ Pencil Sketch</div>
+                    <div class="art-info">
+                        <div class="art-title">Urban Architecture</div>
+                        <div class="art-meta">
+                            <div>By: Sarah Wilson</div>
+                            <div>Medium: Graphite</div>
+                            <div>Submitted: 2025-06-05</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payments Tab -->
+<div id="payments" class="tab-content">
+    <h2>💳 Payment Records</h2>
+    <button class="btn" onclick="showModal('paymentModal')">Add Payment</button>
+    
+    <div class="art-gallery" style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+        <div class="art-card" style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; width: 300px; background-color: #f9f9f9; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+            <div class="art-image" style="font-size: 32px; margin-bottom: 10px;">🧾 Receipt</div>
+            <div class="art-info">
+                <div class="art-title" style="font-weight: bold; font-size: 18px; margin-bottom: 8px;">Emma Johnson</div>
+                <div class="art-meta" style="font-size: 14px; line-height: 1.6;">
+                    <div>Amount: ₹1500.00</div>
+                    <div>Method: UPI</div>
+                    <div>Status: Paid</div>
+                    <div>Date: 2025-06-12</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="art-card" style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; width: 300px; background-color: #f9f9f9; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+            <div class="art-image" style="font-size: 32px; margin-bottom: 10px;">💳 Credit Card</div>
+            <div class="art-info">
+                <div class="art-title" style="font-weight: bold; font-size: 18px; margin-bottom: 8px;">David Smith</div>
+                <div class="art-meta" style="font-size: 14px; line-height: 1.6;">
+                    <div>Amount: ₹1800.00</div>
+                    <div>Method: Credit Card</div>
+                    <div>Status: Pending</div>
+                    <div>Date: 2025-06-10</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="art-card" style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; width: 300px; background-color: #f9f9f9; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+            <div class="art-image" style="font-size: 32px; margin-bottom: 10px;">🏦 Net Banking</div>
+            <div class="art-info">
+                <div class="art-title" style="font-weight: bold; font-size: 18px; margin-bottom: 8px;">Sarah Wilson</div>
+                <div class="art-meta" style="font-size: 14px; line-height: 1.6;">
+                    <div>Amount: ₹1300.00</div>
+                    <div>Method: Net Banking</div>
+                    <div>Status: Paid</div>
+                    <div>Date: 2025-06-08</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <!-- Feedback Tab -->
+        <div id="feedback" class="tab-content">
+            <h2>💬 Student Feedback</h2>
+            <button class="btn" onclick="showModal('feedbackModal')">Add Feedback</button>
+            
+            <div class="data-grid">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Student</th>
+                            <th>Course</th>
+                            <th>Rating</th>
+                            <th>Comments</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>F001</td>
+                            <td>Emma Johnson</td>
+                            <td>Introduction to Oil Painting</td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                            <td>Excellent course! Very helpful instructor.</td>
+                            <td>2025-06-12</td>
+                        </tr>
+                        <tr>
+                            <td>F002</td>
+                            <td>David Smith</td>
+                            <td>Digital Art Fundamentals</td>
+                            <td>⭐⭐⭐⭐</td>
+                            <td>Great content, would like more practice time.</td>
+                            <td>2025-06-10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+     <!-- Modals -->
+    <div id="studentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideModal('studentModal')">&times;</span>
+            <h3>Add New Student</h3>
+            <form>
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" placeholder="Enter student name">
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" placeholder="Enter email address">
+                </div>
+                <div class="form-group">
+                    <label>Phone:</label>
+                    <input type="tel" placeholder="Enter phone number">
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" placeholder="Enter password">
+                </div>
+                <button type="submit" class="btn">Add Student</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="instructorModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideModal('instructorModal')">&times;</span>
+            <h3>Add New Instructor</h3>
+            <form>
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" placeholder="Enter instructor name">
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" placeholder="Enter email address">
+                </div>
+                <div class="form-group">
+                    <label>Expertise:</label>
+                    <input type="text" placeholder="Enter areas of expertise">
+                </div>
+                <div class="form-group">
+                    <label>Phone:</label>
+                    <input type="tel" placeholder="Enter phone number">
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" placeholder="Enter password">
+                </div>
+                <button type="submit" class="btn">Add Instructor</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="courseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideModal('courseModal')">&times;</span>
+            <h3>Add New Course</h3>
+            <form>
+                <div class="form-group">
+                    <label>Title:</label>
+                    <input type="text" placeholder="Enter course title">
+                </div>
+                <div class="form-group">
+                    <label>Description:</label>
+                    <textarea placeholder="Enter course description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Level:</label>
+                    <select>
+                        <option>Beginner</option>
+                        <option>Intermediate</option>
+                        <option>Advanced</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Duration:</label>
+                    <input type="text" placeholder="e.g., 8 weeks">
+                </div>
+                <div class="form-group">
+                    <label>Price:</label>
+                    <input type="number" placeholder="Enter price">
+                </div>
+                <button type="submit" class="btn">Add Course</button>
+            </form>
+        </div>
+    </div>
+
+   <div id="classModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="hideModal('classModal')">&times;</span>
+        <h3>Add New Class</h3>
+        <form>
+            <div class="form-group">
+                <label>Class ID:</label>
+                <input type="text" placeholder="Enter class ID">
+            </div>
+            <div class="form-group">
+                <label>Course:</label>
+                <input type="text" placeholder="Enter course name">
+            </div>
+            <div class="form-group">
+                <label>Instructor:</label>
+                <input type="text" placeholder="Enter instructor name">
+            </div>
+            <div class="form-group">
+                <label>Date:</label>
+                <input type="date">
+            </div>
+            <div class="form-group">
+                <label>Time:</label>
+                <input type="time">
+            </div>
+            <div class="form-group">
+                <label>Location:</label>
+                <input type="text" placeholder="Enter location">
+            </div>
+            <button type="submit" class="btn">Add Class</button>
+        </form>
+    </div>
+</div>
+
+<div id="enrollmentModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="hideModal('enrollmentModal')">&times;</span>
+        <h3>Add Enrollment</h3>
+        <form>
+            <div class="form-group">
+                <label>Enrollment ID:</label>
+                <input type="text" placeholder="Enter enrollment ID">
+            </div>
+            <div class="form-group">
+                <label>Student:</label>
+                <input type="text" placeholder="Enter student name">
+            </div>
+            <div class="form-group">
+                <label>Course:</label>
+                <input type="text" placeholder="Enter course name">
+            </div>
+            <div class="form-group">
+                <label>Enrollment Date:</label>
+                <input type="date">
+            </div>
+            <div class="form-group">
+                <label>Status:</label>
+                <select>
+                    <option value="active">Active</option>
+                    <option value="completed">Completed</option>
+                    <option value="dropped">Dropped</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Enroll Student</button>
+        </form>
+    </div>
+</div>
+<div id="artworkModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="hideModal('artworkModal')">&times;</span>
+        <h3>Add New Artwork</h3>
+        <form>
+            <div class="form-group">
+                <label>Artwork Name:</label>
+                <input type="text" placeholder="Enter artwork name">
+            </div>
+            <div class="form-group">
+                <label>Artist Name (By:):</label>
+                <input type="text" placeholder="Enter artist name">
+            </div>
+            <div class="form-group">
+                <label>Medium:</label>
+                <input type="text" placeholder="Enter medium (e.g., Watercolor, Oil, Digital)">
+            </div>
+            <div class="form-group">
+                <label>Submission Date:</label>
+                <input type="date">
+            </div>
+            <div class="form-group">
+                <label>Upload File:</label>
+                <input type="file">
+            </div>
+            <button type="submit" class="btn">Add Artwork</button>
+        </form>
+    </div>
+</div>
+
+<div id="paymentModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="hideModal('paymentModal')">&times;</span>
+        <h3>Make Payment</h3>
+        <form style="display: flex; flex-wrap: wrap; gap: 15px;">
+            <div class="form-group" style="flex: 1 1 45%; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <label>Student:</label>
+                <input type="text" placeholder="Enter student name">
+            </div>
+            <div class="form-group" style="flex: 1 1 45%; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <label>Amount:</label>
+                <input type="number" placeholder="Enter amount">
+            </div>
+            <div class="form-group" style="flex: 1 1 45%; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <label>Payment Method:</label>
+                <select>
+                    <option value="cash">Cash</option>
+                    <option value="card">Credit/Debit Card</option>
+                    <option value="upi">UPI</option>
+                    <option value="bank">Bank Transfer</option>
+                </select>
+            </div>
+            <div class="form-group" style="flex: 1 1 45%; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <label>Status:</label>
+                <select>
+                    <option value="paid">Paid</option>
+                    <option value="pending">Pending</option>
+                    <option value="failed">Failed</option>
+                </select>
+            </div>
+            <div class="form-group" style="flex: 1 1 45%; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <label>Date:</label>
+                <input type="date">
+            </div>
+            <div style="flex: 1 1 100%;">
+                <button type="submit" class="btn" style="width: 100%;">Submit Payment</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<div id="feedbackModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="hideModal('feedbackModal')">&times;</span>
+        <h3>Submit Feedback</h3>
+        <form>
+            <div class="form-group">
+                <label>Feedback ID:</label>
+                <input type="text" placeholder="Enter feedback ID">
+            </div>
+            <div class="form-group">
+                <label>Student:</label>
+                <input type="text" placeholder="Enter student name">
+            </div>
+            <div class="form-group">
+                <label>Course:</label>
+                <input type="text" placeholder="Enter course name">
+            </div>
+            <div class="form-group">
+                <label>Rating:</label>
+                <select>
+                    <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
+                    <option value="4">⭐⭐⭐⭐ - Very Good</option>
+                    <option value="3">⭐⭐⭐ - Good</option>
+                    <option value="2">⭐⭐ - Fair</option>
+                    <option value="1">⭐ - Poor</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Comments:</label>
+                <textarea placeholder="Enter feedback here..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Date:</label>
+                <input type="date">
+            </div>
+            <button type="submit" class="btn">Submit Feedback</button>
+        </form>
+    </div>
+</div>
+
+ <script>
+        // Tab switching functionality
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected tab and activate button
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Modal functionality
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Sample data management (in a real app, this would connect to backend)
+        let students = [
+            {id: 'S001', name: 'Emma Johnson', email: 'emma.j@email.com', phone: '+1-555-0123', registrationDate: '2025-06-12'},
+            {id: 'S002', name: 'David Smith', email: 'david.s@email.com', phone: '+1-555-0124', registrationDate: '2025-06-10'}
+        ];
+
+        // Form submission handlers (would connect to backend API)
+        function addStudent(formData) {
+            // In real app: fetch('/api/students', {method: 'POST', body: formData})
+            console.log('Adding student:', formData);
+            alert('Student added successfully!');
+        }
+
+        function addInstructor(formData) {
+            // In real app: fetch('/api/instructors', {method: 'POST', body: formData})
+            console.log('Adding instructor:', formData);
+            alert('Instructor added successfully!');
+        }
+
+        function addCourse(formData) {
+            // In real app: fetch('/api/courses', {method: 'POST', body: formData})
+            console.log('Adding course:', formData);
+            alert('Course added successfully!');
+        }
+
+        // Simulate real-time updates
+        function updateDashboardStats() {
+            // This would fetch real data from backend
+            const stats = {
+                students: Math.floor(Math.random() * 50) + 150,
+                instructors: Math.floor(Math.random() * 10) + 20,
+                courses: Math.floor(Math.random() * 5) + 15,
+                enrollments: Math.floor(Math.random() * 100) + 300
+            };
+            
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers[0].textContent = stats.students;
+            statNumbers[1].textContent = stats.instructors;
+            statNumbers[2].textContent = stats.courses;
+            statNumbers[3].textContent = stats.enrollments;
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎨 Art Academy Management System loaded successfully!');
+            
+            // Update stats every 30 seconds (simulate real-time data)
+            setInterval(updateDashboardStats, 30000);
+        });
+
+        // Search and filter functionality
+        function searchTable(inputId, tableId) {
+            const input = document.getElementById(inputId);
+            const table = document.getElementById(tableId);
+            const rows = table.getElementsByTagName('tr');
+            
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let found = false;
+                
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(input.value.toLowerCase())) {
+                        found = true;
+                        break;
+                    }
+                }
+                
+                rows[i].style.display = found ? '' : 'none';
+            }
+        }
+
+        // Export functionality
+        function exportToCSV(tableId, filename) {
+            const table = document.getElementById(tableId);
+            const rows = table.querySelectorAll('tr');
+            let csvContent = '';
+            
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('th, td');
+                const rowData = Array.from(cells).map(cell => cell.textContent.trim());
+                csvContent += rowData.join(',') + '\n';
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Notification system
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background: ${type === 'success' ? '#d4edda' : '#f8d7da'};
+                color: ${type === 'success' ? '#155724' : '#721c24'};
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Add CSS for notification animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+
+
+
+    <script>
+        let currentUser = null;
+        let currentRole = 'admin';
+
+        // Demo users database
+        const users = {
+            admin: {
+                username: 'admin',
+                password: 'admin123',
+                name: 'System Administrator',
+                email: 'admin@artacademy.com',
+                role: 'admin'
+            },
+            student: {
+                username: 'student1',
+                password: 'student123',
+                name: 'Emma Johnson',
+                email: 'emma.j@email.com',
+                role: 'student',
+                studentId: 'S001',
+                enrolledCourses: ['Introduction to Oil Painting', 'Digital Art Basics']
+            },
+            student2: {
+            username: 'Parimala',
+            password: 'parimala456',
+            name: 'Rahul Sharma',
+            email: 'rahul.s@email.com',
+            role: 'student',
+            studentId: 'S002',
+            enrolledCourses: ['Sketching Basics', 'Watercolor Landscapes']
+        },
+            instructor: {
+                username: 'instructor',
+                password: 'instructor123',
+                name: 'Prof. Maria Garcia',
+                email: 'maria.g@artacademy.com',
+                role: 'instructor',
+                instructorId: 'I001',
+                expertise: 'Oil Painting, Portraits',
+                courses: ['Introduction to Oil Painting', 'Advanced Portrait Techniques']
+            }
+        };
+
+        // Role selection
+        function selectRole(role) {
+            currentRole = role;
+            const buttons = document.querySelectorAll('.role-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Clear form
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // Login handler
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Find user
+            const user = Object.values(users).find(u => 
+                u.username === username && u.password === password && u.role === currentRole
+            );
+            
+            if (user) {
+                currentUser = user;
+                showDashboard();
+            } else {
+                alert('Invalid credentials! Please check username, password, and selected role.');
+            }
+        }
+
+        // Show dashboard after successful login
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+            document.body.style.alignItems = 'flex-start';
+            document.body.style.justifyContent = 'flex-start';
+            
+            setupUserInterface();
+        }
+
+        // Setup user interface based on role
+        function setupUserInterface() {
+            const welcomeMsg = document.getElementById('welcomeMessage');
+            const roleDisplay = document.getElementById('roleDisplay');
+            
+            welcomeMsg.textContent = `Welcome back, ${currentUser.name}!`;
+            roleDisplay.textContent = `${currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1)} Dashboard`;
+            
+            setupNavigation();
+            setupDashboard();
+            setupProfile();
+        }
+
+        // Setup navigation based on role
+        function setupNavigation() {
+            const navTabs = document.getElementById('navigationTabs');
+            let tabs = [];
+            
+            if (currentUser.role === 'admin') {
+                tabs = [
+                    {id: 'dashboard', label: 'Dashboard', icon: '📊'},
+                    {id: 'students', label: 'Students', icon: '👥'},
+                    {id: 'instructors', label: 'Instructors', icon: '👨‍🏫'},
+                    {id: 'courses', label: 'Courses', icon: '📚'},
+                    {id: 'classes', label: 'Classes', icon: '🕐'},
+                    {id: 'enrollments', label: 'Enrollments', icon: '📝'},
+                    {id: 'payments', label: 'Payments', icon: '💳'},
+                    {id: 'profile', label: 'Profile', icon: '👤'}
+                ];
+            } else if (currentUser.role === 'instructor') {
+                tabs = [
+                    {id: 'dashboard', label: 'Dashboard', icon: '📊'},
+                    {id: 'students', label: 'My Students', icon: '👥'},
+                    {id: 'courses', label: 'My Courses', icon: '📚'},
+                    {id: 'classes', label: 'My Classes', icon: '🕐'},
+                    {id: 'profile', label: 'Profile', icon: '👤'}
+                ];
+            } else if (currentUser.role === 'student') {
+                tabs = [
+                    {id: 'dashboard', label: 'Dashboard', icon: '📊'},
+                    {id: 'courses', label: 'My Courses', icon: '📚'},
+                    {id: 'classes', label: 'My Schedule', icon: '🕐'},
+                    {id: 'enrollments', label: 'Enrollments', icon: '📝'},
+                    {id: 'payments', label: 'Payments', icon: '💳'},
+                    {id: 'profile', label: 'Profile', icon: '👤'}
+                ];
+            }
+            
+            navTabs.innerHTML = tabs.map(tab => 
+                `<button class="tab-btn ${tab.id === 'dashboard' ? 'active' : ''}" onclick="showTab('${tab.id}')">${tab.icon} ${tab.label}</button>`
+            ).join('');
+        }
+
+        // Setup dashboard content based on role
+        function setupDashboard() {
+            const statsGrid = document.getElementById('statsGrid');
+            const dashboardContent = document.getElementById('dashboardContent');
+            
+            if (currentUser.role === 'admin') {
+                statsGrid.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-number">156</div>
+                        <div>Total Students</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24</div>
+                        <div>Active Instructors</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">18</div>
+                        <div>Available Courses</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">342</div>
+                        <div>Total Enrollments</div>
+                    </div>
+                `;
+                
+                dashboardContent.innerHTML = `
+                    <h3>Recent Activity</h3>
+                    <div class="data-grid">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Activity</th>
+                                    <th>User</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>New Student Registration</td>
+                                    <td>Emma Johnson</td>
+                                    <td>2025-06-12</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Course Enrollment</td>
+                                    <td>David Smith</td>
+                                    <td>2025-06-11</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } else if (currentUser.role === 'instructor') {
+                statsGrid.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-number">3</div>
+                        <div>My Courses</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">45</div>
+                        <div>Total Students</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">12</div>
+                        <div>Classes This Week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">8</div>
+                        <div>Pending Reviews</div>
+                    </div>
+                `;
+                
+                dashboardContent.innerHTML = `
+                    <h3>Today's Classes</h3>
+                    <div class="card-grid">
+                        <div class="info-card">
+                            <div class="card-title">Introduction to Oil Painting</div>
+                            <div class="card-meta">
+                                Time: 10:00 AM - 12:00 PM<br>
+                                Location: Studio A<br>
+                                Students: 15
+                            </div>
+                        </div>
+                        <div class="info-card">
+                            <div class="card-title">Advanced Portrait Techniques</div>
+                            <div class="card-meta">
+                                Time: 2:00 PM - 4:00 PM<br>
+                                Location: Studio B<br>
+                                Students: 8
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (currentUser.role === 'student') {
+                statsGrid.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-number">2</div>
+                        <div>Enrolled Courses</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">6</div>
+                        <div>Classes This Week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">3</div>
+                        <div>Assignments Due</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">$150</div>
+                        <div>Outstanding Balance</div>
+                    </div>
+                `;
+                
+                dashboardContent.innerHTML = `
+                    <h3>My Upcoming Classes</h3>
+                    <div class="card-grid">
+                        <div class="info-card">
+                            <div class="card-title">Introduction to Oil Painting</div>
+                            <div class="card-meta">
+                                Instructor: Prof. Maria Garcia<br>
+                                Next Class: Tomorrow, 10:00 AM<br>
+                                Location: Studio A
+                            </div>
+                        </div>
+                        <div class="info-card">
+                            <div class="card-title">Digital Art Basics</div>
+                            <div class="card-meta">
+                                Instructor: Dr. James Chen<br>
+                                Next Class: Friday, 2:00 PM<br>
+                                Location: Computer Lab
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Setup profile information
+        function setupProfile() {
+            const profileInfo = document.getElementById('profileInfo');
+            
+            let profileHTML = `
+                <strong>Name:</strong> ${currentUser.name}<br>
+                <strong>Email:</strong> ${currentUser.email}<br>
+                <strong>Role:</strong> ${currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1)}<br>
+            `;
+            
+            if (currentUser.role === 'student') {
+                profileHTML += `
+                    <strong>Student ID:</strong> ${currentUser.studentId}<br>
+                    <strong>Enrolled Courses:</strong> ${currentUser.enrolledCourses.join(', ')}<br>
+                `;
+            } else if (currentUser.role === 'instructor') {
+                profileHTML += `
+                    <strong>Instructor ID:</strong> ${currentUser.instructorId}<br>
+                    <strong>Expertise:</strong> ${currentUser.expertise}<br>
+                    <strong>Teaching Courses:</strong> ${currentUser.courses.join(', ')}<br>
+                `;
+            }
+            
+            profileInfo.innerHTML = profileHTML;
+        }
+
+        // Tab switching functionality
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected tab and activate button
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Logout functionality
+        function logout() {
+            currentUser = null;
+            currentRole = 'admin';
+            document.getElementById('appContainer').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'block';
+            document.body.style.alignItems = 'center';
+            document.body.style.justifyContent = 'center';
+            
+            // Reset login form
+            document.getElementById('loginForm').reset();
+            selectRole('admin');
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎨 Art Academy Management System loaded successfully!');
+        });
+    </script>
+
+
+</body>
+</html>
